@@ -11,6 +11,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "skills")
@@ -33,7 +34,7 @@ public class Skill {
     private double rating;
 
     @OneToMany(mappedBy = "skill")
-    private HashSet<UnderSkill> underSkills;
+    private Set<UnderSkill> underSkills;
 
     public void addUnderSkill(UnderSkill underSkill) {
         underSkills.add(underSkill);

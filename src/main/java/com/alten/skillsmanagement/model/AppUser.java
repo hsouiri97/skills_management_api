@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users",
@@ -20,7 +20,7 @@ import java.util.HashSet;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User {
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,9 +54,9 @@ public class User {
     @Email
     private String email;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "roleId"))
-    private HashSet<Role> roles;
+    private Set<AppRole> roles;
 }

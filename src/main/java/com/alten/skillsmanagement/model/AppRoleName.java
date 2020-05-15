@@ -6,9 +6,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.alten.skillsmanagement.model.PermissionName.*;
+import static com.alten.skillsmanagement.model.AppPermissionName.*;
 
-public enum RoleName {
+public enum AppRoleName {
     ADMIN(Sets.newHashSet(SKILL_READ, SKILL_WRITE,
             SKILLS_MATRIX_READ, SKILLS_MATRIX_WRITE,
             MANAGER_READ, MANAGER_WRITE,
@@ -22,19 +22,19 @@ public enum RoleName {
             SKILLS_MATRIX_READ, SKILLS_MATRIX_WRITE,
             CONSULTANT_READ));
 
-    private final Set<PermissionName> permissionNames;
+    private final Set<AppPermissionName> appPermissionNames;
 
-    RoleName(Set<PermissionName> permissionNames) {
-        this.permissionNames = permissionNames;
+    AppRoleName(Set<AppPermissionName> appPermissionNames) {
+        this.appPermissionNames = appPermissionNames;
     }
 
-    public Set<PermissionName> getPermissionNames() {
-        return permissionNames;
+    public Set<AppPermissionName> getAppPermissionNames() {
+        return appPermissionNames;
     }
 
     public Set<SimpleGrantedAuthority> simpleGrantedAuthorities() {
-        Set<SimpleGrantedAuthority> authorities = getPermissionNames().stream()
-                .map(permissionName -> new SimpleGrantedAuthority(permissionName.getPermission()))
+        Set<SimpleGrantedAuthority> authorities = getAppPermissionNames().stream()
+                .map(appPermissionName -> new SimpleGrantedAuthority(appPermissionName.getPermission()))
                 .collect(Collectors.toSet());
         authorities.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
 

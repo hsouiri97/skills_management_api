@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor @AllArgsConstructor @Data
-public class Role {
+public class AppRole {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,11 +19,11 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @NaturalId
     @Column(length = 60)
-    private RoleName roleName;
+    private AppRoleName roleName;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permission",
     joinColumns = @JoinColumn(name = "roleIid"),
     inverseJoinColumns = @JoinColumn(name = "permissionId"))
-    private HashSet<Permission> permissions;
+    private Set<AppPermission> permissions;
 }

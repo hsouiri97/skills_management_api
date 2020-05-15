@@ -11,6 +11,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "skills_matrix")
@@ -37,6 +38,6 @@ public class SkillsMatrix {
     @JoinTable(name = "skillsMatrix_skill",
             joinColumns = @JoinColumn(name = "skillsMatrixId"),
             inverseJoinColumns = @JoinColumn(name = "skillId"))
-    private HashSet<Skill> skills;
+    private Set<Skill> skills;
 
 }

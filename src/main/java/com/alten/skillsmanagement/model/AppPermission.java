@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Permission {
+public class AppPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,5 +20,5 @@ public class Permission {
     @Enumerated(EnumType.STRING)
     @NaturalId
     @Column(length = 120)
-    private PermissionName permissionName;
+    private AppPermissionName appPermissionName;
 }
