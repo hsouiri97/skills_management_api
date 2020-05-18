@@ -61,4 +61,11 @@ public class AppUser {
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<AppRole> roles;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "positionId")
+    private Position position;
+
+    @OneToOne(mappedBy = "projectManager")
+    private Project project;
 }
