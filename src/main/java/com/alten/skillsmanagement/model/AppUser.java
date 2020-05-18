@@ -1,5 +1,6 @@
 package com.alten.skillsmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = {"username"}),
                 @UniqueConstraint(columnNames = {"email"})
         })
+@JsonIgnoreProperties(value={"password", "id"}, allowSetters = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

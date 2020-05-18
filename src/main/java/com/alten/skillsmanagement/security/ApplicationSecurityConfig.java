@@ -35,8 +35,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTUsernameAndPasswordAuthFilter(authenticationManager()))
                 .addFilterAfter(new JWTOncePerRequestFilter(), JWTUsernameAndPasswordAuthFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/css/*", "/js/*", "/h2-console/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.jpg",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/h2-console/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
     }
 
     @Override

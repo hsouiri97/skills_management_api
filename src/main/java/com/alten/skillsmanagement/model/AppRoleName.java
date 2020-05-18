@@ -9,18 +9,21 @@ import java.util.stream.Collectors;
 import static com.alten.skillsmanagement.model.AppPermissionName.*;
 
 public enum AppRoleName {
-    ADMIN(Sets.newHashSet(SKILL_READ, SKILL_WRITE,
+    ADMIN(Sets.newHashSet(
             SKILLS_MATRIX_READ, SKILLS_MATRIX_WRITE,
             MANAGER_READ, MANAGER_WRITE,
-            CONSULTANT_READ, CONSULTANT_WRITE)),
+            CONSULTANT_READ, CONSULTANT_WRITE
+    )),
 
-    MANAGER(Sets.newHashSet(SKILL_READ, SKILL_WRITE,
+    MANAGER(Sets.newHashSet(
             SKILLS_MATRIX_READ, SKILLS_MATRIX_WRITE,
-            MANAGER_READ, CONSULTANT_READ)),
+            MANAGER_READ, CONSULTANT_READ
+    )),
 
-    CONSULTANT(Sets.newHashSet(SKILL_READ, SKILL_WRITE,
+    CONSULTANT(Sets.newHashSet(
             SKILLS_MATRIX_READ, SKILLS_MATRIX_WRITE,
-            CONSULTANT_READ));
+            CONSULTANT_READ
+    ));
 
     private final Set<AppPermissionName> appPermissionNames;
 
@@ -36,7 +39,7 @@ public enum AppRoleName {
         Set<SimpleGrantedAuthority> authorities = getAppPermissionNames().stream()
                 .map(appPermissionName -> new SimpleGrantedAuthority(appPermissionName.getPermission()))
                 .collect(Collectors.toSet());
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
 
         return authorities;
     }

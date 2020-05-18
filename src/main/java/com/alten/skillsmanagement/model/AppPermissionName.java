@@ -1,8 +1,8 @@
 package com.alten.skillsmanagement.model;
 
 public enum AppPermissionName {
-    SKILL_READ("skill:read"),
-    SKILL_WRITE("skill:write"),
+    //SKILL_READ("skill:read"),
+    //SKILL_WRITE("skill:write"),
     SKILLS_MATRIX_READ("skills_matrix:read"),
     SKILLS_MATRIX_WRITE("skills_matrix:write"),
     MANAGER_READ("manager:read"),

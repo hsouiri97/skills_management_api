@@ -7,7 +7,6 @@ import com.alten.skillsmanagement.repository.AppRoleRepository;
 import com.alten.skillsmanagement.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +34,18 @@ public class AccountService {
         return appUserRepository.save(appUser);
     }
 
-    public AppRole saveRole(AppRole appRole) {
-        return appRoleRepository.save(appRole);
-    }
 
     public AppUser findUserByUsername(String username) {
         return appUserRepository.findAppUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found.", username)));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Username: %s not found.", username)));
+    }
+
+    public Boolean usernameTaken(String username) {
+        return appUserRepository.existsByUsername(username);
+    }
+
+    public Boolean existsUserByEmail(String email) {
+        return appUserRepository.existsByEmail(email);
     }
 
     public void addRoleToUser(String username, AppRoleName roleName) {
@@ -49,7 +53,4 @@ public class AccountService {
         AppRole appRole = appRoleRepository.findByRoleName(roleName);
         appUser.getRoles().add(appRole);
     }
-
-
-
 }
