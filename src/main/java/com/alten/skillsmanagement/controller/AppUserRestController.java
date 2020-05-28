@@ -23,7 +23,6 @@ public class AppUserRestController {
         this.accountService = accountService;
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/sign-up")
     public AppUser registerUser(@Valid @RequestBody AppUserDto appUserDto) {
         String email = appUserDto.getEmail();
