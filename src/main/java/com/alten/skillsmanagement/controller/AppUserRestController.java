@@ -5,6 +5,7 @@ import com.alten.skillsmanagement.model.AppUser;
 import com.alten.skillsmanagement.service.AccountService;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,8 +67,8 @@ public class AppUserRestController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CONSULTANT')")
-    @GetMapping("/me")
-    public AppUser userInfo(@AuthenticationPrincipal Object principal) {
+    @GetMapping("/profile")
+    public ResponseEntity<AppUser> userInfo(@AuthenticationPrincipal Object principal) {
         String username;
         if (principal instanceof UserDetails) {
             username = ((UserDetails)principal).getUsername();
@@ -77,6 +78,7 @@ public class AppUserRestController {
         if (username==null || username.isEmpty()) {
             throw new RuntimeException("username is null or empty");
         }
-        return accountService.findUserByUsername(username);
+        AppUser appUser = accountService.findUserByUsername(username);
+        return ResponseEntity.ok().body(appUser);
     }
 }
