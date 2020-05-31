@@ -1,8 +1,7 @@
 package com.alten.skillsmanagement.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -17,7 +16,8 @@ import java.util.Set;
 @Table(name = "skills")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,22 +27,43 @@ public class Skill {
     @Size(max = 100)
     private String name;
 
-    @NotBlank
-    @Min(0)
-    @Max(5)
     @ColumnDefault("0")
-    private double rating;
+    private Double rating = -1.d;
 
-    @OneToMany(mappedBy = "skill")
-    private Set<UnderSkill> underSkills;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "skill",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Set<UnderSkill> underSkills = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "skill_user",
+            joinColumns = {@JoinColumn(name = "skill_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private Set<AppUser> appUsers = new HashSet<>();
+
+
+    @OneToMany (mappedBy = "skill")
+    private Set<SkillUser> skillUsers = new HashSet<>();
 
     public void addUnderSkill(UnderSkill underSkill) {
         underSkills.add(underSkill);
         underSkill.setSkill(this);
     }
 
-    public void removeSkill(UnderSkill underSkill) {
-        underSkills.remove(underSkill);
+
+    public void removeUnderSkill(UnderSkill underSkill) {
         underSkill.setSkill(null);
+    }
+
+    public void calculateRating() {
+        //if (rating.equals(-1.d)) {
+            rating = (double) Math.round(underSkills.stream().mapToDouble(UnderSkill::getRating)
+                    .average()
+                    .orElse(Double.NaN)*100d)/100d;
+
+        //}
+        System.out.println("from skill: "+ rating);
     }
 }

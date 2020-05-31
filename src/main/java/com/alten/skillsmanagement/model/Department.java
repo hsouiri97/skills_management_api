@@ -2,14 +2,13 @@ package com.alten.skillsmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "departments")
@@ -31,14 +30,14 @@ public class Department {
     @OneToMany(mappedBy = "department",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
-    private List<Position> positions = new ArrayList<>();
+    private Set<Position> positions = new HashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "department",
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             orphanRemoval = true)
-    private List<Sector> sectors = new ArrayList<>();
+    private Set<Sector> sectors = new HashSet<>();
 
     public void addSector(Sector sector) {
         sector.setDepartment(this);

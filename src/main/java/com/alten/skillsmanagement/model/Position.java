@@ -26,5 +26,4 @@ public class Position {
 
     @OneToMany(mappedBy = "position")
     private List<AppUser> appUsers;
-
 }

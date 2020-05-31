@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -42,7 +43,7 @@ public class DepartmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Poll", "pollId", id));
 
         department.setName(departmentDto.getName());
-        List<Sector> sectors = department.getSectors();
+        Set<Sector> sectors = department.getSectors();
         sectors.forEach(department::removeSector);
         department.getSectors().clear();
         departmentDto.getSectors().forEach(department::addSector);

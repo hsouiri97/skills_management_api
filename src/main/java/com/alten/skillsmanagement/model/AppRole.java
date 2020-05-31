@@ -23,7 +23,7 @@ public class AppRole {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permission",
-    joinColumns = @JoinColumn(name = "roleIid"),
+    joinColumns = @JoinColumn(name = "roleId"),
     inverseJoinColumns = @JoinColumn(name = "permissionId"))
     private Set<AppPermission> permissions;
 }

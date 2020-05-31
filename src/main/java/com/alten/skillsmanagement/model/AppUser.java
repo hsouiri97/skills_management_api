@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -68,4 +69,10 @@ public class AppUser {
 
     @OneToOne(mappedBy = "projectManager")
     private Project project;
+
+    @OneToMany (mappedBy = "appUser")
+    private Set<SkillsMatrix> skillsMatrices = new HashSet<>();
+
+    @OneToMany (mappedBy = "appUser")
+    private Set<SkillUser> skillUsers = new HashSet<>();
 }

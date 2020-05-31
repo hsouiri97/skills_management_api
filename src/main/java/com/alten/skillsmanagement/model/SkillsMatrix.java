@@ -1,8 +1,6 @@
 package com.alten.skillsmanagement.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -24,20 +22,29 @@ public class SkillsMatrix {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 150)
     private String title;
 
-    @NotBlank
     @Min(0)
     @Max(5)
     @ColumnDefault("0")
-    private double average_rating;
+    @Setter(AccessLevel.NONE)
+    private double averageRating;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "skillsMatrix_skill",
             joinColumns = @JoinColumn(name = "skillsMatrixId"),
             inverseJoinColumns = @JoinColumn(name = "skillId"))
-    private Set<Skill> skills;
+    private Set<Skill> skills = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private AppUser appUser;
+
+    public void calculateAverageRating() {
+        averageRating =  Math.round(skills.stream().mapToDouble(Skill::getRating)
+                .average()
+                .orElse(Double.NaN)*100d)/100d;
+        System.out.println("from skillMatrix: "+ averageRating);
+    }
 
 }
