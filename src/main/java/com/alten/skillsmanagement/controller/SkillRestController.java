@@ -80,7 +80,7 @@ public class SkillRestController {
                                                     @PathVariable Long userId) {
         skillService.addSkillToAppUser(skillId, userId);
         return ResponseEntity.ok("SKILL AFFECTED TO USER");
-    }*/ // No need
+    }*/ // No need we affect matrices not skills
 
     //This method should be invoked by consultants and maybe managers
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CONSULTANT', 'ROLE_ADMIN')")

@@ -1,5 +1,6 @@
 package com.alten.skillsmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -69,9 +70,15 @@ public class AppUser {
     @OneToOne(mappedBy = "projectManager")
     private Project project;
 
+    @JsonIgnore
     @OneToMany (mappedBy = "appUser")
     private Set<SkillsMatrix> skillsMatrices = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany (mappedBy = "appUser")
     private Set<SkillUser> skillUsers = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany (mappedBy = "appUser")
+    private Set<ProjectUser> projectUsers = new HashSet<>();
 }
