@@ -53,27 +53,18 @@ public class SkillService {
                 .orElseThrow(() -> new ResourceNotFoundException("Skill", "id", id));
 
         skill.setName(skillDto.getName());
-        cleanTheSkill(skill);
+        Set<UnderSkill> underSkills = skill.getUnderSkills();
+        underSkills.forEach(skill::removeUnderSkill);
+        skill.getUnderSkills().clear();
         //setTheRating(skillDto, skill);
+        skillDto.getUnderSkills().forEach(skill::addUnderSkill);
         return skillRepository.save(skill);
     }
 
     public void deleteSkill(Long id) {
-        Skill skill = skillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill", "id" ,id));
-
-        cleanTheSkill(skill);
-
-
-
         skillRepository.deleteById(id);
     }
 
-    private void cleanTheSkill(Skill skill) {
-        Set<UnderSkill> underSkills = skill.getUnderSkills();
-        underSkills.forEach(skill::removeUnderSkill);
-        skill.getUnderSkills().clear();
-    }
 
     public void addSkillToMatrix(Long skillId, Long matrixId) {
         Skill skill = getSkill(skillId);
