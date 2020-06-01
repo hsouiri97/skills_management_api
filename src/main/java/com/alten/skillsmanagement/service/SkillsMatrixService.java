@@ -48,6 +48,12 @@ public class SkillsMatrixService {
         return skillsMatrixRepository.save(skillsMatrix);
     }
 
+    public void affectMatrixToUser(Long matrixId, Long appUserId) {
+        AppUser appUser = accountService.getUserById(appUserId);
+        SkillsMatrix skillsMatrix = getSkillsMatrix(matrixId);
+        skillsMatrix.setAppUser(appUser);
+    }
+
     public SkillsMatrix updateSkillsMatrix(Long id, SkillsMatrixDto skillsMatrixDto){
         SkillsMatrix skillsMatrix = skillsMatrixRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("SkillsMatrix", "id", id));
@@ -56,9 +62,16 @@ public class SkillsMatrixService {
         return skillsMatrix;
     }
 
-    /*public void affectMatrixToUser(String username, Long id) {
-        AppUser appUser = accountService.findUserByUsername(username);
-        SkillsMatrix skillsMatrix = getSkillsMatrix(id);
-        skillsMatrix.getAppUsers().add(appUser);
-    }*/
+    public void deleteSkillsMatrix (Long id) {
+        SkillsMatrix skillsMatrix = skillsMatrixRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("SkillsMatrix", "id", id));
+
+        skillsMatrixRepository.delete(skillsMatrix);
+    }
+
+    public SkillsMatrix getSkillsMatrixByAppUser(Long userId) {
+        AppUser appUser = accountService.getUserById(userId);
+        return skillsMatrixRepository.getSkillsMatrixByAppUser(appUser)
+                .orElseThrow(() -> new ResourceNotFoundException("SkillsMatrix", "appUser", appUser));
+    }
 }

@@ -26,10 +26,10 @@ public class UnderSkill {
     private String name;
 
 
-    @Min(0)
+    /*@Min(0)
     @Max(5)
     @ColumnDefault("0")
-    private int rating = 0;
+    private int rating = 0;*/
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

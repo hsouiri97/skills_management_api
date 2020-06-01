@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Setter
 @Getter
+@Embeddable
 public class SkillUserId implements Serializable {
     private Long skillId;
     private Long userId;

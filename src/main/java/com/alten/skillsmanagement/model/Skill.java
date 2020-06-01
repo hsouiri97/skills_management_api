@@ -1,5 +1,6 @@
 package com.alten.skillsmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -27,8 +28,8 @@ public class Skill {
     @Size(max = 100)
     private String name;
 
-    @ColumnDefault("0")
-    private Double rating = -1.d;
+    /*@ColumnDefault("0")
+    private Double rating = -1.d;*/
 
     @JsonManagedReference
     @OneToMany(mappedBy = "skill",
@@ -37,13 +38,13 @@ public class Skill {
             orphanRemoval = true)
     private Set<UnderSkill> underSkills = new HashSet<>();
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name = "skill_user",
             joinColumns = {@JoinColumn(name = "skill_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private Set<AppUser> appUsers = new HashSet<>();
+    private Set<AppUser> appUsers = new HashSet<>();*/
 
-
+    @JsonIgnore
     @OneToMany (mappedBy = "skill")
     private Set<SkillUser> skillUsers = new HashSet<>();
 
@@ -57,7 +58,7 @@ public class Skill {
         underSkill.setSkill(null);
     }
 
-    public void calculateRating() {
+    /*public void calculateRating() {
         //if (rating.equals(-1.d)) {
             rating = (double) Math.round(underSkills.stream().mapToDouble(UnderSkill::getRating)
                     .average()
@@ -65,5 +66,5 @@ public class Skill {
 
         //}
         System.out.println("from skill: "+ rating);
-    }
+    }*/ // should be on the front-side
 }

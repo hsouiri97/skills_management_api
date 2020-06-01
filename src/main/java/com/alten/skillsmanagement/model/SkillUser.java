@@ -1,26 +1,24 @@
 package com.alten.skillsmanagement.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@NoArgsConstructor @AllArgsConstructor @Data
-@Table(name = "skill_user")
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class SkillUser {
     @EmbeddedId
     private SkillUserId id = new SkillUserId();
 
     @ManyToOne
-    @MapsId("skillId")
-    private Skill skill;
+    @MapsId("userId")
+    @JoinColumn(name = "userId")
+    private AppUser appUser;
 
     @ManyToOne
-    @MapsId("userId")
-    private AppUser appUser;
+    @JoinColumn(name = "skillId")
+    @MapsId("skillId")
+    private Skill skill;
 
     private Double rating;
 }

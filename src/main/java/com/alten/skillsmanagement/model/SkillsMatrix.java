@@ -1,5 +1,6 @@
 package com.alten.skillsmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -15,7 +16,8 @@ import java.util.Set;
 @Table(name = "skills_matrix")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class SkillsMatrix {
 
     @Id
@@ -36,15 +38,16 @@ public class SkillsMatrix {
             inverseJoinColumns = @JoinColumn(name = "skillId"))
     private Set<Skill> skills = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
 
-    public void calculateAverageRating() {
+    /*public void calculateAverageRating() {
         averageRating =  Math.round(skills.stream().mapToDouble(Skill::getRating)
                 .average()
                 .orElse(Double.NaN)*100d)/100d;
         System.out.println("from skillMatrix: "+ averageRating);
-    }
+    }*/
 
 }

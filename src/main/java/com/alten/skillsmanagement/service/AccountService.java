@@ -1,5 +1,6 @@
 package com.alten.skillsmanagement.service;
 
+import com.alten.skillsmanagement.exception.ResourceNotFoundException;
 import com.alten.skillsmanagement.model.AppRole;
 import com.alten.skillsmanagement.model.AppRoleName;
 import com.alten.skillsmanagement.model.AppUser;
@@ -38,6 +39,11 @@ public class AccountService {
     public AppUser findUserByUsername(String username) {
         return appUserRepository.findAppUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Username: %s not found.", username)));
+    }
+
+    public AppUser getUserById(Long appUserId) {
+        return appUserRepository.findById(appUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("AppUser", "id", appUserId));
     }
 
     public Boolean usernameTaken(String username) {

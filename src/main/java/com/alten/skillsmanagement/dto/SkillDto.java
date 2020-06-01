@@ -19,9 +19,9 @@ public class SkillDto {
     @Size(max = 100)
     private String name;
 
-    @Min(0)
+    /*@Min(0)
     @Max(5)
-    private Double rating = -1.d;
+    private Double rating = -1.d;*/
 
     @Valid
     private Set<UnderSkill> underSkills;
