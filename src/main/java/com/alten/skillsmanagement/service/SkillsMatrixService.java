@@ -3,7 +3,6 @@ package com.alten.skillsmanagement.service;
 import com.alten.skillsmanagement.dto.SkillsMatrixDto;
 import com.alten.skillsmanagement.exception.ResourceNotFoundException;
 import com.alten.skillsmanagement.model.AppUser;
-import com.alten.skillsmanagement.model.Skill;
 import com.alten.skillsmanagement.model.SkillsMatrix;
 import com.alten.skillsmanagement.repository.SkillsMatrixRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -49,7 +47,7 @@ public class SkillsMatrixService {
     }
 
     public void affectMatrixToUser(Long matrixId, Long appUserId) {
-        AppUser appUser = accountService.getUserById(appUserId);
+        AppUser appUser = accountService.getUser(appUserId);
         SkillsMatrix skillsMatrix = getSkillsMatrix(matrixId);
         skillsMatrix.setAppUser(appUser);
     }
@@ -70,7 +68,7 @@ public class SkillsMatrixService {
     }
 
     public SkillsMatrix getSkillsMatrixByAppUser(Long userId) {
-        AppUser appUser = accountService.getUserById(userId);
+        AppUser appUser = accountService.getUser(userId);
         return skillsMatrixRepository.getSkillsMatrixByAppUser(appUser)
                 .orElseThrow(() -> new ResourceNotFoundException("SkillsMatrix", "appUser", appUser));
     }

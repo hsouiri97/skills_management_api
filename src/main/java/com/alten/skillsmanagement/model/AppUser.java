@@ -18,7 +18,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = {"username"}),
                 @UniqueConstraint(columnNames = {"email"})
         })
-@JsonIgnoreProperties(value={"password", "id"}, allowSetters = true)
+@JsonIgnoreProperties(value={"password"}, allowSetters = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -53,7 +53,7 @@ public class AppUser {
 
     @NotBlank
     @Size(max = 40)
-    @NaturalId
+    @NaturalId(mutable = true)
     @Email
     private String email;
 
@@ -63,12 +63,13 @@ public class AppUser {
             inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<AppRole> roles = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "positionId")
     private Position position;
 
     @OneToOne(mappedBy = "projectManager")
-    private Project project;
+    private Project manageProject;
 
     @JsonIgnore
     @OneToMany (mappedBy = "appUser")

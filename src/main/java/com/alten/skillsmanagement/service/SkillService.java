@@ -81,7 +81,7 @@ public class SkillService {
 
     public void addRatingToSkillUser(Long skillId, Double rating, Long appUserId) {
         Skill skill = getSkill(skillId);
-        AppUser appUser = accountService.getUserById(appUserId);
+        AppUser appUser = accountService.getUser(appUserId);
 
         SkillUser skillUser = new SkillUser();
         skillUser.setAppUser(appUser);

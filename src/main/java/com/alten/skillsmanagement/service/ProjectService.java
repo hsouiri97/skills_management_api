@@ -64,7 +64,7 @@ public class ProjectService {
     }
 
     public boolean affectProjectToManager(Integer projectId, Long userId) {
-        AppUser appUser = accountService.getUserById(userId);
+        AppUser appUser = accountService.getUser(userId);
         boolean allowed = checkRole(appUser);
         if (allowed) {
             Project project = getProject(projectId);
@@ -77,10 +77,7 @@ public class ProjectService {
     private boolean checkRole(AppUser appUser) {
         Set<AppRoleName> roles = appUser.getRoles().stream().map(AppRole::getRoleName).collect(Collectors.toSet());
         for (AppRoleName roleName: roles) {
-            /**should be replaced by
-             * MANAGER
-             */
-            if (roleName.equals(CONSULTANT))
+            if (roleName.equals(MANAGER))
                 return true;
         }
         return false;
@@ -92,7 +89,7 @@ public class ProjectService {
                                                       Date endDate,
                                                       String responsibility) {
         Project project = getProject(projectId);
-        AppUser appUser = accountService.getUserById(userId);
+        AppUser appUser = accountService.getUser(userId);
 
         ProjectUser projectUser = new ProjectUser();
         projectUser.setProject(project);

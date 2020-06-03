@@ -24,7 +24,7 @@ public class AppUserRestController {
         this.accountService = accountService;
     }
 
-    @PostMapping("/sign-up")
+    /*@PostMapping("/sign-up")
     public AppUser registerUser(@Valid @RequestBody AppUserDto appUserDto) {
         String email = appUserDto.getEmail();
         //AppUser appUser = accountService.findUserByEmail(email);
@@ -64,7 +64,7 @@ public class AppUserRestController {
         appUser.setRoles(Sets.newHashSet());
         accountService.addRoleToUser(appUser.getUsername(), CONSULTANT);
         return appUser;
-    }
+    }*/
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CONSULTANT')")
     @GetMapping("/profile")

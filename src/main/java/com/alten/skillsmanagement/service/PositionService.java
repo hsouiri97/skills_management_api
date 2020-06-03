@@ -19,15 +19,12 @@ public class PositionService {
 
     private PositionRepository positionRepository;
     private DepartmentService departmentService;
-    private AccountService accountService;
 
     @Autowired
     public PositionService(PositionRepository positionRepository,
-                           DepartmentService departmentService,
-                           AccountService accountService) {
+                           DepartmentService departmentService) {
         this.positionRepository = positionRepository;
         this.departmentService = departmentService;
-        this.accountService = accountService;
     }
 
     public Position getPosition(Integer id) {
@@ -69,19 +66,5 @@ public class PositionService {
 
     public void deletePosition(Integer id) {
         positionRepository.deleteById(id);
-    }
-
-    public void affectPositionToUser(Integer positionId, Long appUserId) {
-        Position position = getPosition(positionId);
-        AppUser appUser = accountService.getUserById(appUserId);
-
-        position.getAppUsers().add(appUser);
-    }
-
-    public void removePositionFromUser(Integer positionId, Long appUserId) {
-        Position position = getPosition(positionId);
-        AppUser appUser = accountService.getUserById(appUserId);
-
-        position.getAppUsers().remove(appUser);
     }
 }
