@@ -3,6 +3,7 @@ package com.alten.skillsmanagement.service;
 import com.alten.skillsmanagement.dto.DepartmentDto;
 import com.alten.skillsmanagement.exception.ResourceNotFoundException;
 import com.alten.skillsmanagement.model.Department;
+import com.alten.skillsmanagement.model.Position;
 import com.alten.skillsmanagement.model.Sector;
 import com.alten.skillsmanagement.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class DepartmentService {
 
     public Department getDepartment(Integer id) {
         return departmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Poll", "pollId", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Department", "id", id));
     }
 
     public List<Department> getDepartments() {
@@ -52,6 +53,12 @@ public class DepartmentService {
 
     public void deleteDepartment(Integer id) {
         departmentRepository.deleteById(id);
+    }
+
+    public void addPositionToDepartment(Integer departmentId, Position position) {
+        Department department = getDepartment(departmentId);
+        department.getPositions().add(position);
+        departmentRepository.save(department);
     }
 
 }

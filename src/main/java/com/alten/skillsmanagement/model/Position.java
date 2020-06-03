@@ -1,6 +1,7 @@
 package com.alten.skillsmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Position {
     @JoinColumn(name = "departmentId")
     private Department department;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "position")
     private List<AppUser> appUsers;
 }
