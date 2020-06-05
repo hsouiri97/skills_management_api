@@ -41,6 +41,7 @@ public class JWTOncePerRequestFilter extends OncePerRequestFilter {
                 "Access-Control-Request-Method, " +
                 "Access-Control-Request-Headers, " +
                 "Authorization");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         response.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, " +
                 "Access-Control-Allow-Credentials, " +
                 "Authorization");

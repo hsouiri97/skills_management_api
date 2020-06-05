@@ -45,6 +45,12 @@ public class AppUser {
     private String cin;
 
     @NotBlank
+    @Size(max = 10)
+    private String gender;
+
+    private String diploma;
+
+    @NotBlank
     @Size(max = 15)
     private String username;
 
@@ -57,6 +63,12 @@ public class AppUser {
     @Email
     private String email;
 
+    @NotBlank
+    private String mobile;
+
+    private String quote;
+
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "userId"),

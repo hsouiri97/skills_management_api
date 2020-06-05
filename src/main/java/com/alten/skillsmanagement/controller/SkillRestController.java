@@ -1,11 +1,14 @@
 package com.alten.skillsmanagement.controller;
 
 import com.alten.skillsmanagement.dto.SkillDto;
+import com.alten.skillsmanagement.model.AppUser;
 import com.alten.skillsmanagement.model.Skill;
+import com.alten.skillsmanagement.service.AccountService;
 import com.alten.skillsmanagement.service.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,10 +19,13 @@ import java.util.List;
 public class SkillRestController {
 
     private SkillService skillService;
+    private AccountService accountService;
 
     @Autowired
-    public SkillRestController(SkillService skillService) {
+    public SkillRestController(SkillService skillService,
+                               AccountService accountService) {
         this.skillService = skillService;
+        this.accountService = accountService;
     }
 
     @PreAuthorize("hasAuthority('skills_matrix:read')")
@@ -84,30 +90,35 @@ public class SkillRestController {
 
     //This method should be invoked by consultants and maybe managers
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CONSULTANT', 'ROLE_ADMIN')")
-    @PostMapping("/{skillId}/add-rating/{rating}/to-user/{userId}")
+    @PostMapping("/{skillId}/add-rating/{rating}")
     public ResponseEntity<String> addRatingToSkillUser(@PathVariable Long skillId,
                                                        @PathVariable Double rating,
-                                                       @PathVariable Long userId
-                                                       ) {
-        skillService.addRatingToSkillUser(skillId, rating, userId);
+                                                       @AuthenticationPrincipal Object principal
+    ) {
+        String usernameOfAuthenticatedUser = accountService.getUsernameOfAuthenticatedUser(principal);
+        AppUser appUser = accountService.findUserByUsername(usernameOfAuthenticatedUser);
+        skillService.addRatingToSkillUser(skillId, rating, appUser.getId());
         return ResponseEntity.ok("RATING ADDED TO SkillUser");
     }
 
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CONSULTANT', 'ROLE_ADMIN')")
-    @PutMapping("/{skillId}/update-rating/{rating}/of-user/{userId}")
+    @PutMapping("/{skillId}/update-rating/{rating}}")
     public ResponseEntity<String> updateRatingOfSkillUser(@PathVariable Long skillId,
-                                                       @PathVariable Double rating,
-                                                       @PathVariable Long userId ){
-        skillService.updateRatingOfSkillUser(skillId, rating, userId);
+                                                          @PathVariable Double rating,
+                                                          @AuthenticationPrincipal Object principal) {
+        String usernameOfAuthenticatedUser = accountService.getUsernameOfAuthenticatedUser(principal);
+        AppUser appUser = accountService.findUserByUsername(usernameOfAuthenticatedUser);
+        skillService.updateRatingOfSkillUser(skillId, rating, appUser.getId());
         return ResponseEntity.ok("RATING UPDATED");
     }
 
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CONSULTANT', 'ROLE_ADMIN')")
-    @DeleteMapping("/{skillId}/delete-rating-of-user/{userId}")
+    @DeleteMapping("/{skillId}/delete-rating")
     public ResponseEntity<String> deleteRatingOfSkillUser(@PathVariable Long skillId,
-                                                          @PathVariable Long userId ) {
-
-        skillService.deleteRatingOfSkillUser(skillId, userId);
+                                                          @AuthenticationPrincipal Object principal) {
+        String usernameOfAuthenticatedUser = accountService.getUsernameOfAuthenticatedUser(principal);
+        AppUser appUser = accountService.findUserByUsername(usernameOfAuthenticatedUser);
+        skillService.deleteRatingOfSkillUser(skillId, appUser.getId());
         return ResponseEntity.ok("SkillUser DELETED");
     }
 }

@@ -29,7 +29,6 @@ public class SkillsMatrix {
     @Min(0)
     @Max(5)
     @ColumnDefault("0")
-    @Setter(AccessLevel.NONE)
     private double averageRating;
 
     @ManyToMany(cascade = CascadeType.ALL)

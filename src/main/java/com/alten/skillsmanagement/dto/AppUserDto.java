@@ -27,6 +27,12 @@ public class AppUserDto {
     private String cin;
 
     @NotBlank
+    @Size(max = 10)
+    private String gender;
+
+    private String diploma;
+
+    @NotBlank
     private String password;
 
     @NotBlank
@@ -36,4 +42,9 @@ public class AppUserDto {
     @Size(max = 40)
     @Email
     private String email;
+
+    @NotBlank
+    private String mobile;
+
+    private String quote;
 }

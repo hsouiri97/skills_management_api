@@ -31,7 +31,18 @@ public class AppUserUpdateDto {
     private String cin;
 
     @NotBlank
+    @Size(max = 10)
+    private String gender;
+
+    private String diploma;
+
+    @NotBlank
     @Size(max = 40)
     @Email
     private String email;
+
+    @NotBlank
+    private String mobile;
+
+    private String quote;
 }

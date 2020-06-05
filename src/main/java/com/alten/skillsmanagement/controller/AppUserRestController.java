@@ -1,6 +1,7 @@
 package com.alten.skillsmanagement.controller;
 
 import com.alten.skillsmanagement.dto.AppUserDto;
+import com.alten.skillsmanagement.dto.AppUserUpdateDto;
 import com.alten.skillsmanagement.model.AppUser;
 import com.alten.skillsmanagement.service.AccountService;
 import com.google.common.collect.Sets;
@@ -68,17 +69,22 @@ public class AppUserRestController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CONSULTANT')")
     @GetMapping("/profile")
-    public ResponseEntity<AppUser> userInfo(@AuthenticationPrincipal Object principal) {
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        if (username==null || username.isEmpty()) {
-            throw new RuntimeException("username is null or empty");
-        }
+    public ResponseEntity<AppUser> getUserProfile(@AuthenticationPrincipal Object principal) {
+        String username = accountService.getUsernameOfAuthenticatedUser(principal);
+
         AppUser appUser = accountService.findUserByUsername(username);
         return ResponseEntity.ok().body(appUser);
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CONSULTANT')")
+    @PutMapping("/profile")
+    public ResponseEntity<AppUser> updateUserProfile(@AuthenticationPrincipal Object principal,
+                                                     @RequestBody @Valid AppUserUpdateDto appUserUpdateDto) {
+        String username = accountService.getUsernameOfAuthenticatedUser(principal);
+        AppUser appUser = accountService.findUserByUsername(username);
+        AppUser appUserUpdated = accountService.updateUser(appUser.getId(), appUserUpdateDto);
+        return ResponseEntity.ok(appUserUpdated);
+    }
+
+
 }

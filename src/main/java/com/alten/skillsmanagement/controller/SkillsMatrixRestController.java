@@ -8,9 +8,12 @@ import com.alten.skillsmanagement.service.SkillsMatrixService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,35 +21,46 @@ import java.util.List;
 public class SkillsMatrixRestController {
 
     private SkillsMatrixService skillsMatrixService;
+    private AccountService accountService;
 
     @Autowired
-    public SkillsMatrixRestController(SkillsMatrixService skillsMatrixService) {
+    public SkillsMatrixRestController(SkillsMatrixService skillsMatrixService,
+                                      AccountService accountService) {
         this.skillsMatrixService = skillsMatrixService;
+        this.accountService = accountService;
     }
 
     @PreAuthorize("hasAuthority('skills_matrix:read')")
     @GetMapping("/{skillsMatrixId}")
-    public SkillsMatrix getSkillMatrix(@PathVariable Long skillsMatrixId) {
-        return skillsMatrixService.getSkillsMatrix(skillsMatrixId);
+    public ResponseEntity<SkillsMatrix> getSkillMatrix(@PathVariable Long skillsMatrixId) {
+        SkillsMatrix skillsMatrix = skillsMatrixService.getSkillsMatrix(skillsMatrixId);
+        return ResponseEntity.ok(skillsMatrix);
     }
 
     @PreAuthorize("hasAuthority('skills_matrix:read')")
     @GetMapping
-    public List<SkillsMatrix> skillsMatrices() {
-        return skillsMatrixService.getSkillsMatrices();
+    public ResponseEntity<List<SkillsMatrix>> skillsMatrices() {
+        List<SkillsMatrix> skillsMatrices = skillsMatrixService.getSkillsMatrices();
+        return ResponseEntity.ok(skillsMatrices);
     }
 
     @PreAuthorize("hasAuthority('skills_matrix:write')")
     @PostMapping
-    public SkillsMatrix createSkillsMatrix(@Valid @RequestBody SkillsMatrixDto skillsMatrixDto) {
-        return skillsMatrixService.createSkillsMatrix(skillsMatrixDto);
+    public ResponseEntity<SkillsMatrix> createSkillsMatrix(@Valid @RequestBody SkillsMatrixDto skillsMatrixDto) {
+        SkillsMatrix skillsMatrix = skillsMatrixService.createSkillsMatrix(skillsMatrixDto);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{positionId}")
+                .buildAndExpand(skillsMatrix.getId()).toUri();
+
+        return ResponseEntity.created(location).body(skillsMatrix);
     }
 
     @PreAuthorize(("hasRole('ROLE_ADMIN')"))
     @PutMapping("/{matrixId}")
-    public SkillsMatrix updateSkillsMatrix(@PathVariable Long matrixId,
+    public ResponseEntity<SkillsMatrix> updateSkillsMatrix(@PathVariable Long matrixId,
                                            @Valid @RequestBody SkillsMatrixDto skillsMatrixDto) {
-        return skillsMatrixService.updateSkillsMatrix(matrixId, skillsMatrixDto);
+        SkillsMatrix skillsMatrix = skillsMatrixService.updateSkillsMatrix(matrixId, skillsMatrixDto);
+        return ResponseEntity.ok(skillsMatrix);
     }
 
     @PreAuthorize(("hasRole('ROLE_ADMIN')"))
@@ -66,11 +80,34 @@ public class SkillsMatrixRestController {
         return ResponseEntity.ok("MATRIX AFFECTED TO USER.");
     }
 
-    @PreAuthorize(("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CONSULTANT')"))
+    @PreAuthorize(("hasAnyRole('ROLE_ADMIN')"))
     @GetMapping("/user/{userId}")
-    public SkillsMatrix getSkillsMatrixByUserId(@PathVariable Long userId) {
-        return skillsMatrixService.getSkillsMatrixByAppUser(userId);
+    public ResponseEntity<SkillsMatrix> getSkillsMatrixByUserId(@PathVariable Long userId) {
+        SkillsMatrix skillsMatrix = skillsMatrixService.getSkillsMatrixByAppUser(userId);
+        return ResponseEntity.ok(skillsMatrix);
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CONSULTANT')")
+    @GetMapping("/user")
+    public ResponseEntity<SkillsMatrix> getSkillsMatrixOfAuthenticatedUser(@AuthenticationPrincipal Object principal) {
+        String username = accountService.getUsernameOfAuthenticatedUser(principal);
+        AppUser appUser = accountService.findUserByUsername(username);
+        SkillsMatrix skillsMatrixByAppUser = skillsMatrixService.getSkillsMatrixByAppUser(appUser.getId());
+        return ResponseEntity.ok(skillsMatrixByAppUser);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CONSULTANT')")
+    @PutMapping("/set-rating/{rating}")
+    public ResponseEntity<SkillsMatrix> setRating(@AuthenticationPrincipal Object principal,
+                                                  @PathVariable double rating) {
+        String username = accountService.getUsernameOfAuthenticatedUser(principal);
+        AppUser appUser = accountService.findUserByUsername(username);
+        SkillsMatrix skillsMatrix = skillsMatrixService.getSkillsMatrixByAppUser(appUser.getId());
+        SkillsMatrix skillsMatrixUpdated = skillsMatrixService.setAverageRating(skillsMatrix, rating);
+        return ResponseEntity.ok(skillsMatrixUpdated);
+    }
+
+
 
 
     /*@PreAuthorize("hasAuthority('skills_matrix:write')")

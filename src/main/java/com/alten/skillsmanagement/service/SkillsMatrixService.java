@@ -72,4 +72,9 @@ public class SkillsMatrixService {
         return skillsMatrixRepository.getSkillsMatrixByAppUser(appUser)
                 .orElseThrow(() -> new ResourceNotFoundException("SkillsMatrix", "appUser", appUser));
     }
+
+    public SkillsMatrix setAverageRating(SkillsMatrix skillsMatrix, double averageRating) {
+        skillsMatrix.setAverageRating(averageRating);
+        return skillsMatrixRepository.save(skillsMatrix);
+    }
 }

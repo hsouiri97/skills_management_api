@@ -10,6 +10,8 @@ import com.alten.skillsmanagement.model.Position;
 import com.alten.skillsmanagement.repository.AppRoleRepository;
 import com.alten.skillsmanagement.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,10 @@ public class AccountService {
         appUser.setAddress(appUserUpdateDto.getAddress());
         appUser.setCin(appUserUpdateDto.getCin());
         appUser.setEmail(appUserUpdateDto.getEmail());
+        appUser.setMobile(appUserUpdateDto.getMobile());
+        appUser.setGender(appUserUpdateDto.getGender());
+        appUser.setDiploma(appUserUpdateDto.getDiploma());
+        appUser.setQuote(appUserUpdateDto.getQuote());
 
         return appUserRepository.save(appUser);
     }
@@ -93,7 +99,11 @@ public class AccountService {
             } while (Boolean.TRUE.equals(usernameTaken));
         }
         String address = appUserDto.getAddress();
+        String mobile = appUserDto.getMobile();
         String cin = appUserDto.getCin();
+        String gender = appUserDto.getGender();
+        String diploma = appUserDto.getDiploma();
+        String quote = appUserDto.getQuote();
 
         //mapping
         AppUser appUser = new AppUser();
@@ -104,6 +114,10 @@ public class AccountService {
         appUser.setPassword(password);
         appUser.setCin(cin);
         appUser.setAddress(address);
+        appUser.setMobile(mobile);
+        appUser.setGender(gender);
+        appUser.setDiploma(diploma);
+        appUser.setQuote(quote);
 
         return appUser;
     }
@@ -147,6 +161,19 @@ public class AccountService {
         AppRole managerRole = appRoleRepository.findByRoleName(MANAGER);
         appUser.getRoles().add(managerRole);
         return appUserRepository.save(appUser);
+    }
+
+    public String getUsernameOfAuthenticatedUser(@AuthenticationPrincipal Object principal) {
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        if (username==null || username.isEmpty()) {
+            throw new RuntimeException("username is null or empty");
+        }
+        return username;
     }
 
 
