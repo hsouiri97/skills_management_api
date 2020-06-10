@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @NoArgsConstructor @AllArgsConstructor @Data
 public class AppUserDto {
@@ -47,4 +48,14 @@ public class AppUserDto {
     private String mobile;
 
     private String quote;
+
+    private boolean isManager;
+
+    private int yearsOfExperience;
+
+    private Date entryDate;
+
+    private Date integrationDate;
+
+    private Date departureDate;
 }

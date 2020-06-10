@@ -1,7 +1,6 @@
 package com.alten.skillsmanagement.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Department {
 
     @Id
@@ -24,8 +24,8 @@ public class Department {
     @NotBlank
     private String name;
 
-
-    @JsonManagedReference
+    //@JsonIgnoreProperties("department")
+    //@JsonManagedReference
     @OneToMany(mappedBy = "department",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)

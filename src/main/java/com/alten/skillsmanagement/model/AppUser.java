@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public class AppUser {
     private String address;
 
     @NotBlank
-    @Size(max = 7)
+    @Size(max = 6)
     private String cin;
 
     @NotBlank
@@ -68,7 +69,17 @@ public class AppUser {
 
     private String quote;
 
-    @JsonIgnore
+    private boolean isManager;
+
+    private int yearsOfExperience;
+
+    private Date entryDate;
+
+    private Date integrationDate;
+
+    private Date departureDate;
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "userId"),
