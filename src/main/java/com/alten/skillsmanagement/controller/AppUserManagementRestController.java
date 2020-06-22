@@ -3,6 +3,7 @@ package com.alten.skillsmanagement.controller;
 import com.alten.skillsmanagement.dto.AppUserDto;
 import com.alten.skillsmanagement.dto.AppUserUpdateDto;
 import com.alten.skillsmanagement.model.AppUser;
+import com.alten.skillsmanagement.payload.UserOfSearchResponse;
 import com.alten.skillsmanagement.service.AccountService;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,9 @@ public class AppUserManagementRestController {
         return ResponseEntity.ok(appUser);
     }
 
-
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search")
+    public List<AppUser> getUsersByMatchingFullName(@RequestParam String term) {
+        return accountService.searchByFullName(term) ;
+    }
 }

@@ -8,6 +8,7 @@ import com.alten.skillsmanagement.model.AppRole;
 import com.alten.skillsmanagement.model.AppRoleName;
 import com.alten.skillsmanagement.model.AppUser;
 import com.alten.skillsmanagement.model.Position;
+import com.alten.skillsmanagement.payload.UserOfSearchResponse;
 import com.alten.skillsmanagement.repository.AppRoleRepository;
 import com.alten.skillsmanagement.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -227,6 +228,10 @@ public class AccountService {
             throw new RuntimeException("username is null or empty");
         }
         return username;
+    }
+
+    public List<AppUser> searchByFullName(String term) {
+        return appUserRepository.searchByFullName(term);
     }
 
 

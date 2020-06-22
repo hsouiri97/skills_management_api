@@ -29,7 +29,7 @@ public class SkillsMatrix {
     @Min(0)
     @Max(5)
     @ColumnDefault("0")
-    private double averageRating;
+    private double totalAverageRating;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "skillsMatrix_skill",
@@ -38,9 +38,18 @@ public class SkillsMatrix {
     private Set<Skill> skills = new HashSet<>();
 
     @JsonIgnore
+    @OneToMany (mappedBy = "skillsMatrix")
+    private Set<SkillsMatrixUser> skillsMatrixUsers = new HashSet<>();
+
+    public SkillsMatrix(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    /*@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private AppUser appUser;
+    private AppUser appUser;*/
 
     /*public void calculateAverageRating() {
         averageRating =  Math.round(skills.stream().mapToDouble(Skill::getRating)

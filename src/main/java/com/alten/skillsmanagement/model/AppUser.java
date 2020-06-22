@@ -94,9 +94,13 @@ public class AppUser {
     @OneToOne(mappedBy = "projectManager")
     private Project manageProject;
 
+    /*@JsonIgnore
+    @OneToMany (mappedBy = "appUser")
+    private Set<SkillsMatrix> skillsMatrices = new HashSet<>();*/
+
     @JsonIgnore
     @OneToMany (mappedBy = "appUser")
-    private Set<SkillsMatrix> skillsMatrices = new HashSet<>();
+    private Set<SkillsMatrixUser> skillsMatrixUsers = new HashSet<>();
 
     @JsonIgnore
     @OneToMany (mappedBy = "appUser")
@@ -105,4 +109,10 @@ public class AppUser {
     @JsonIgnore
     @OneToMany (mappedBy = "appUser")
     private Set<ProjectUser> projectUsers = new HashSet<>();
+
+    public AppUser(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

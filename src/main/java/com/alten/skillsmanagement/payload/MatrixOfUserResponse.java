@@ -6,18 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class MatricesOfUserResponse {
-    private List<SkillsMatrix> skillsMatrices;
+public class MatrixOfUserResponse {
+    private SkillsMatrix skillsMatrix;
     private Long userId;
-    private String userFirstName;
-    private String userLastName;
-    private String userEmail;
-    private String userMobile;
-    
+    private Double averageRating;
 }
