@@ -28,7 +28,7 @@ public class AppUserUpdateDto {
     private String address;
 
     @NotBlank
-    @Size(max = 7)
+    @Size(max = 8)
     private String cin;
 
     @NotBlank

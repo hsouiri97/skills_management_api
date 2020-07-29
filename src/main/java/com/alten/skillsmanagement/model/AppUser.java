@@ -42,7 +42,7 @@ public class AppUser {
     private String address;
 
     @NotBlank
-    @Size(max = 6)
+    @Size(max = 8)
     private String cin;
 
     @NotBlank
